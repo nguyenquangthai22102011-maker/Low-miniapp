@@ -3,154 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mini App</title>
+    <title>Low Shop</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* Cài đặt chung */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: var(--tg-theme-bg-color, #f0f2f5); color: var(--tg-theme-text-color, #000); padding-bottom: 70px; }
+        .header { padding: 20px; text-align: center; background: #1e3c72; color: white; border-radius: 0 0 20px 20px; }
+        .container { padding: 15px; }
+        .product-card {
+            background: var(--tg-theme-secondary-bg-color, #fff);
+            padding: 15px; border-radius: 12px; margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center;
         }
-        body {
-            background-color: var(--tg-theme-bg-color, #f0f2f5);
-            color: var(--tg-theme-text-color, #000000);
-            padding-bottom: 60px; /* Chừa chỗ cho thanh menu dưới */
-            transition: background-color 0.3s, color 0.3s;
+        .product-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .product-info p { font-size: 14px; color: #e53935; font-weight: bold; }
+        .buy-btn {
+            background: var(--tg-theme-button-color, #007bff); color: white;
+            border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer;
         }
-
-        /* Phần Header */
-        .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        .header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        /* Phần Nội dung chính */
-        .content {
-            padding: 20px;
-        }
-        .card {
-            background-color: var(--tg-theme-secondary-bg-color, #ffffff);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .card h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        /* Nút bấm */
-        button {
-            background-color: var(--tg-theme-button-color, #007bff);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 10px;
-            width: 100%;
-            cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-        button:active {
-            transform: scale(0.95);
-            opacity: 0.8;
-        }
-
-        /* Thanh Menu dưới cùng */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: var(--tg-theme-secondary-bg-color, #ffffff);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            position: fixed; bottom: 0; width: 100%; height: 60px; background: var(--tg-theme-secondary-bg-color, #fff);
+            display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
-        .nav-item {
-            text-align: center;
-            color: gray;
-            font-size: 12px;
-            cursor: pointer;
-        }
-        .nav-item.active {
-            color: var(--tg-theme-button-color, #007bff);
-            font-weight: bold;
-        }
-        .nav-item span {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 2px;
-        }
+        .nav-item { text-align: center; color: gray; font-size: 12px; }
+        .nav-item.active { color: #007bff; font-weight: bold; }
+        .nav-item span { font-size: 20px; display: block; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
-        <h1>🚀 Low Mini App</h1>
-        <p id="user-greeting">Đang tải thông tin...</p>
+        <h1>🛒 Cửa Hàng Low</h1>
     </div>
 
-    <!-- Nội dung -->
-    <div class="content">
-        <div class="card">
-            <h2>Chức năng 1</h2>
-            <p>Đây là khu vực hiển thị nội dung của bạn.</p>
-            <br>
-            <button onclick="showAlert()">Bấm vào tôi</button>
-        </div>
+    <div id="page-home" class="container">
+        <h2>Chào mừng bạn!</h2>
+        <p>Hãy chuyển sang tab Cửa hàng để xem sản phẩm.</p>
     </div>
 
-    <!-- Thanh Menu -->
+    <div id="page-shop" class="container hidden">
+        <div id="product-list"></div>
+    </div>
+
+    <div id="page-profile" class="container hidden">
+        <h2>Thông tin cá nhân</h2>
+        <p id="user-info">Đang tải...</p>
+    </div>
+
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showAlert()">
-            <span>🏠</span> Trang chủ
-        </div>
-        <div class="nav-item" onclick="showAlert()">
-            <span>🛒</span> Cửa hàng
-        </div>
-        <div class="nav-item" onclick="showAlert()">
-            <span>👤</span> Cá nhân
-        </div>
+        <div class="nav-item active" onclick="switchTab('home', this)"><span>🏠</span>Trang chủ</div>
+        <div class="nav-item" onclick="switchTab('shop', this)"><span>🛒</span>Cửa hàng</div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><span>👤</span>Cá nhân</div>
     </div>
 
     <script>
-        // Khởi tạo Telegram WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Mở rộng toàn màn hình
+        tg.expand();
 
-        // Lấy thông tin user
-        let user = tg.initDataUnsafe?.user;
-        if (user) {
-            document.getElementById('user-greeting').innerText = "Chào " + user.first_name + ", chúc bạn một ngày tốt lành!";
+        // Hiển thị tên user
+        if (tg.initDataUnsafe?.user) {
+            document.getElementById('user-info').innerText = "Tên: " + tg.initDataUnsafe.user.first_name + "\nID: " + tg.initDataUnsafe.user.id;
         }
 
-        // Hàm hiển thị thông báo
-        function showAlert() {
-            tg.showAlert("Chức năng này đang được phát triển!");
+        // Hàm chuyển tab
+        function switchTab(tabName, element) {
+            document.getElementById('page-home').classList.add('hidden');
+            document.getElementById('page-shop').classList.add('hidden');
+            document.getElementById('page-profile').classList.add('hidden');
+            
+            document.getElementById('page-' + tabName).classList.remove('hidden');
+
+            let navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Tải danh sách sản phẩm (Giả lập, sau này sẽ lấy từ API)
+        // Bạn có thể sửa thông tin này trực tiếp ở đây
+        const products = [
+            { id: 1, name: "CapCut 1 Tháng", price: "30.000đ" },
+            { id: 2, name: "Netflix 1 Tháng", price: "50.000đ" }
+        ];
+
+        let productHTML = "";
+        products.forEach(p => {
+            productHTML += `
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.price}</p>
+                    </div>
+                    <button class="buy-btn" onclick="buyProduct(${p.id})">Mua</button>
+                </div>
+            `;
+        });
+        document.getElementById('product-list').innerHTML = productHTML;
+
+        // Xử lý khi bấm mua
+        function buyProduct(id) {
+            tg.showAlert("Tính năng thanh toán đang được xử lý!");
+            // Gửi dữ liệu về bot Telegram
+            tg.sendData(JSON.stringify({ action: "buy", product_id: id }));
         }
     </script>
 </body>
