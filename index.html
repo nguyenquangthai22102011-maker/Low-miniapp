@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,112 +7,164 @@
     <title>Low Premium</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        /* Biến màu sắc: Tím kết hợp Neon */
         :root {
-            --primary: #ff007f;
-            --secondary: #2575fc;
-            --bg-dark: #0f0c29;
-            --card-bg: rgba(255, 255, 255, 0.08);
+            --neon-purple: #bc13fe;
+            --neon-pink: #ff007f;
+            --neon-blue: #00f3ff;
+            --bg-dark: #0a0514;
+            --card-bg: rgba(188, 19, 254, 0.1);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #fff; min-height: 100vh; padding-bottom: 80px;
-        }
-        .header { text-align: center; padding: 30px 20px; }
-        .header h1 {
-            font-size: 28px;
-            background: linear-gradient(to right, #ff007f, #2575fc);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
-        }
-        .container { padding: 0 20px; }
-        .hidden { display: none; }
-        
-        .product-card {
-            background: var(--card-bg); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
-            padding: 20px; margin-bottom: 20px; display: flex;
-            justify-content: space-between; align-items: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-        .product-info h3 { font-size: 18px; margin-bottom: 5px; }
-        .product-info .price { color: #00ff87; font-weight: bold; font-size: 16px; }
-        
-        .buy-btn {
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white; border: none; padding: 10px 25px;
-            border-radius: 12px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
-        }
-        .buy-btn:active { transform: scale(0.9); }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: #fff; min-height: 100vh; padding-bottom: 80px;
+            /* Hiệu ứng nền chuyển động */
+            background-image: radial-gradient(circle at 15% 50%, rgba(188, 19, 254, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 243, 255, 0.15), transparent 25%);
+        }
+
+        .header { text-align: center; padding: 30px 20px 20px; }
+        .header h1 {
+            font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+            /* Hiệu ứng Neon Text */
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple), 0 0 40px var(--neon-purple);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple); }
+            100% { text-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 50px var(--neon-pink); }
+        }
+
+        .container { padding: 0 20px; transition: opacity 0.3s ease; }
+        .hidden { display: none; opacity: 0; }
+
+        /* Thẻ kính mờ (Glassmorphism) viền Neon */
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(10px);
+            border: 1px solid rgba(188, 19, 254, 0.3); border-radius: 20px;
+            padding: 20px; margin-bottom: 20px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
+        }
+        
+        .card-info h3 { font-size: 18px; margin-bottom: 8px; color: #fff; }
+        .price { color: var(--neon-blue); font-weight: bold; font-size: 16px; text-shadow: 0 0 5px var(--neon-blue); }
+        
+        /* Nút bấm Neon */
+        .btn {
+            background: transparent; color: #fff; border: 2px solid var(--neon-purple);
+            padding: 10px 20px; border-radius: 12px; font-weight: bold; font-size: 14px;
+            cursor: pointer; box-shadow: 0 0 10px var(--neon-purple), inset 0 0 5px var(--neon-purple);
+            transition: all 0.2s ease;
+        }
+        .btn:active { background: var(--neon-purple); box-shadow: 0 0 20px var(--neon-purple); transform: scale(0.95); }
+
+        /* Thanh Menu dưới */
         .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; height: 70px;
-            background: rgba(15, 12, 41, 0.9); backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed; bottom: 0; width: 100%; height: 75px;
+            background: rgba(10, 5, 20, 0.9); backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(188, 19, 254, 0.4);
             display: flex; justify-content: space-around; align-items: center;
-            border-radius: 20px 20px 0 0; z-index: 100;
+            border-radius: 25px 25px 0 0; z-index: 100; padding: 0 10px;
+            box-shadow: 0 -5px 20px rgba(188, 19, 254, 0.2);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
-            color: #888; font-size: 12px; cursor: pointer; padding: 10px 20px; border-radius: 15px;
+            color: #777; font-size: 11px; cursor: pointer; padding: 8px 15px; border-radius: 15px;
+            transition: all 0.3s;
         }
-        .nav-item span { font-size: 24px; margin-bottom: 5px; }
-        .nav-item.active { color: #fff; background: rgba(255, 255, 255, 0.1); }
-        
-        .profile-card {
-            background: var(--card-bg); padding: 30px; border-radius: 20px;
-            text-align: center; border: 1px solid rgba(255,255,255,0.1);
-        }
+        .nav-item span { font-size: 22px; margin-bottom: 4px; }
+        .nav-item.active { color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple); }
+
+        /* Trang Cá nhân */
+        .profile-card { text-align: center; display: flex; flex-direction: column; align-items: center; }
         .avatar {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: linear-gradient(45deg, #ff007f, #2575fc);
-            margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 40px;
+            width: 90px; height: 90px; border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            display: flex; justify-content: center; align-items: center; font-size: 45px;
+            box-shadow: 0 0 20px var(--neon-pink); margin-bottom: 15px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header"><h1>Low Premium</h1></div>
+    <div class="header">
+        <h1>LOW PREMIUM</h1>
+    </div>
 
+    <!-- TRANG CHỦ -->
     <div id="page-home" class="container">
-        <div class="product-card" style="flex-direction: column; text-align: center;">
-            <h3>👋 Chào mừng đến với Low Shop!</h3>
-            <p style="color: #aaa; margin-top: 10px;">Chuyển sang tab Cửa Hàng để mua sắm.</p>
+        <div class="card" style="flex-direction: column; text-align: center;">
+            <h3>🚀 Chào mừng đến với Hệ Thống!</h3>
+            <p style="color: #bbb; margin-top: 10px; font-size: 14px;">Vui lòng chọn các mục bên dưới để trải nghiệm dịch vụ.</p>
         </div>
     </div>
 
+    <!-- TRANG CỬA HÀNG -->
     <div id="page-shop" class="container hidden">
         <div id="product-list"></div>
     </div>
 
-    <div id="page-profile" class="container hidden">
-        <div class="profile-card">
-            <div class="avatar">👤</div>
-            <h2 id="user-name">Đang tải...</h2>
-            <p id="user-id" style="color: #aaa; margin-top: 5px;">ID: ...</p>
+    <!-- TRANG TẢI HACK -->
+    <div id="page-hack" class="container hidden">
+        <h2 style="text-align: center; margin-bottom: 20px; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink);">🔥 KHU VỰC TẢI HACK 🔥</h2>
+        
+        <div class="card">
+            <div class="card-info">
+                <h3>FF Mod Menu (Auto Headshot)</h3>
+                <p style="color: #aaa; font-size: 12px; margin-top: 5px;">Phiên bản: v1.2 | Dung lượng: 15MB</p>
+            </div>
+            <button class="btn" onclick="downloadHack('https://example.com/hack1.apk')">TẢI</button>
+        </div>
+
+        <div class="card">
+            <div class="card-info">
+                <h3>Tool Fix Lag FF</h3>
+                <p style="color: #aaa; font-size: 12px; margin-top: 5px;">Phiên bản: v2.0 | Không cần Root</p>
+            </div>
+            <button class="btn" onclick="downloadHack('https://example.com/hack2.zip')">TẢI</button>
         </div>
     </div>
 
+    <!-- TRANG CÁ NHÂN -->
+    <div id="page-profile" class="container hidden">
+        <div class="card profile-card">
+            <div class="avatar">👤</div>
+            <h2 id="user-name">Đang tải...</h2>
+            <p id="user-id" style="color: var(--neon-blue); margin-top: 8px;">ID: ...</p>
+        </div>
+    </div>
+
+    <!-- THANH MENU (Đã thêm mục Hack) -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home', this)"><span>🏠</span>Trang chủ</div>
         <div class="nav-item" onclick="switchTab('shop', this)"><span>🛒</span>Cửa hàng</div>
+        <div class="nav-item" onclick="switchTab('hack', this)"><span>⚡</span>Tải Hack</div>
         <div class="nav-item" onclick="switchTab('profile', this)"><span>👤</span>Cá nhân</div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand();
+        tg.expand(); // Mở rộng toàn màn hình
 
+        // Lấy thông tin User
         if (tg.initDataUnsafe?.user) {
             document.getElementById('user-name').innerText = tg.initDataUnsafe.user.first_name;
             document.getElementById('user-id').innerText = "ID: " + tg.initDataUnsafe.user.id;
         }
 
+        // Hàm chuyển đổi Tab
         function switchTab(tabName, element) {
             document.getElementById('page-home').classList.add('hidden');
             document.getElementById('page-shop').classList.add('hidden');
+            document.getElementById('page-hack').classList.add('hidden');
             document.getElementById('page-profile').classList.add('hidden');
+            
             document.getElementById('page-' + tabName).classList.remove('hidden');
 
             let navItems = document.querySelectorAll('.nav-item');
@@ -121,24 +174,25 @@
 
         // Dữ liệu sản phẩm mẫu
         const products = [
-            { id: 1, name: "CapCut 1 Tháng", price: "30.000đ" },
-            { id: 2, name: "Netflix Premium", price: "50.000đ" }
+            { id: 1, name: "Acc CapCut 1 Tháng", price: "30.000đ" },
+            { id: 2, name: "Netflix Premium 1 Tháng", price: "50.000đ" }
         ];
 
         let productHTML = "";
         products.forEach(p => {
             productHTML += `
-                <div class="product-card">
-                    <div class="product-info">
+                <div class="card">
+                    <div class="card-info">
                         <h3>${p.name}</h3>
                         <p class="price">${p.price}</p>
                     </div>
-                    <button class="buy-btn" onclick="buyProduct(${p.id})">MUA</button>
+                    <button class="btn" onclick="buyProduct(${p.id})">MUA</button>
                 </div>
             `;
         });
         document.getElementById('product-list').innerHTML = productHTML;
 
+        // Xử lý Mua Hàng
         function buyProduct(id) {
             tg.HapticFeedback.impactOccurred('medium');
             tg.showConfirm("Bạn có chắc muốn mua sản phẩm này?", function(confirmed) {
@@ -146,6 +200,12 @@
                     tg.sendData(JSON.stringify({ action: "buy", product_id: id }));
                 }
             });
+        }
+
+        // Xử lý Tải Hack (Mở link ngoài)
+        function downloadHack(url) {
+            tg.HapticFeedback.notificationOccurred('success');
+            tg.openLink(url); // Mở link tải bằng trình duyệt ngoài
         }
     </script>
 </body>
