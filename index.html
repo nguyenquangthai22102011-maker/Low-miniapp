@@ -1,20 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Cài đặt chung */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: var(--tg-theme-bg-color, #f0f2f5);
+            color: var(--tg-theme-text-color, #000000);
+            padding-bottom: 60px; /* Chừa chỗ cho thanh menu dưới */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Phần Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Phần Nội dung chính */
+        .content {
+            padding: 20px;
+        }
+        .card {
+            background-color: var(--tg-theme-secondary-bg-color, #ffffff);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Nút bấm */
+        button {
+            background-color: var(--tg-theme-button-color, #007bff);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        button:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        /* Thanh Menu dưới cùng */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--tg-theme-secondary-bg-color, #ffffff);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .nav-item {
+            text-align: center;
+            color: gray;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            color: var(--tg-theme-button-color, #007bff);
+            font-weight: bold;
+        }
+        .nav-item span {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Chào mừng đến với Mini App!</h1>
-    <p id="user-name">Đang tải...</p>
-    <button onclick="tg.showAlert('Bạn đã bấm nút!')">Bấm vào tôi</button>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🚀 Low Mini App</h1>
+        <p id="user-greeting">Đang tải thông tin...</p>
+    </div>
+
+    <!-- Nội dung -->
+    <div class="content">
+        <div class="card">
+            <h2>Chức năng 1</h2>
+            <p>Đây là khu vực hiển thị nội dung của bạn.</p>
+            <br>
+            <button onclick="showAlert()">Bấm vào tôi</button>
+        </div>
+    </div>
+
+    <!-- Thanh Menu -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showAlert()">
+            <span>🏠</span> Trang chủ
+        </div>
+        <div class="nav-item" onclick="showAlert()">
+            <span>🛒</span> Cửa hàng
+        </div>
+        <div class="nav-item" onclick="showAlert()">
+            <span>👤</span> Cá nhân
+        </div>
+    </div>
+
     <script>
+        // Khởi tạo Telegram WebApp
         let tg = window.Telegram.WebApp;
-        tg.expand();
-        if (tg.initDataUnsafe?.user) {
-            document.getElementById('user-name').innerText = "Xin chào, " + tg.initDataUnsafe.user.first_name + "!";
+        tg.expand(); // Mở rộng toàn màn hình
+
+        // Lấy thông tin user
+        let user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-greeting').innerText = "Chào " + user.first_name + ", chúc bạn một ngày tốt lành!";
+        }
+
+        // Hàm hiển thị thông báo
+        function showAlert() {
+            tg.showAlert("Chức năng này đang được phát triển!");
         }
     </script>
 </body>
